@@ -1,0 +1,87 @@
+h1 {
+    font-family: Verdana;
+    font-weight: normal;
+    font-size: 32px;
+    color: #7b7bc0;
+}
+
+body {
+    background-color: #FFFEAC;
+}
+
+.menu {
+    
+    display: inline-block; /* make the nav element display inline with other elements */
+    position: relative; /* set the nav element as the relative reference for the absolute positioning of the span element */
+    margin-top: 10px; /* add a margin-top to the nav element */
+    margin-right: 20px; /* add a margin-right to the nav element */
+    padding: 5px;
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    font-weight: normal;
+    font-size: 20px;
+    background-color: #a0a0FF;
+}
+
+.menuitem {
+	
+}
+.selmenuitem {
+    background-color: #f0f0f0;
+}
+.menuitem:hover {
+	background-color: #f0f090;
+}
+.selmenuitem:hover {
+    background-color: #f0f090;
+}
+
+#tasksctl {
+    position: fixed; /* set the span element as a fixed position */
+    top: 10px; /* position the span element at the top */
+    right: 20px; /* position the span element at the right edge of the browser */
+    background-color: #a0FFa0;
+}
+
+#statusbar {
+    display: inline-block;
+    width: 250px;
+}
+#controlbtn {
+    /* display: inline-block; */
+    width: 100px;
+}
+.navbar {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    border: 2px solid #73AD21;
+    padding: 2px;    
+}
+.navbar:last-child {
+	flex-grow: 1;
+}
+.navtext {
+    display: inline-block;
+    width: 100px;
+}
+.navitem {
+	display: inline-block;
+    width: 100px;
+    text-align: center;
+    background-color: #99ff99;
+}
+.navitem:hover {
+    background-color: #3374C2;
+}
+.slider {
+	margin: 2px;
+	padding: 2px;
+	border: 1px solid #777777;
+	border-radius: 3px;
+}
+.tag {
+	background-color: #ffff99;
+}
+.tag:hover {
+    background-color: #9999ff;
+}

@@ -1,6 +1,13 @@
 package main
 
-type File struct {
+import (
+	"fmt"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/mattn/go-sqlite3"
+	"log"
+)
+
+type Media struct {
 	Id    int    `db:"id"`
 	Path  string `db:"path"`
 	Size  int64  `db:"size"`
@@ -19,3 +26,68 @@ const SQLITE_SCHEMA_Files string = `CREATE TABLE IF NOT EXISTS "files" (
 	"sha1"	varchar(255) DEFAULT "",
 	"sha2"	varchar(255) DEFAULT ""
 )`
+
+
+func InitDatabase() {
+	db, err := sqlx.Connect("sqlite3", "./album.db")
+	if err != nil {
+		log.Fatal("failed to connect database: ", err)
+	}
+	App.db = db
+
+	if _, err := App.db.Exec(SQLITE_SCHEMA_Files); err != nil {
+		log.Fatal("error crate table: ", err)
+		panic(err)
+	}
+
+	App.db.Exec("PRAGMA journal_mode = WAL")
+	App.db.Exec("PRAGMA synchronous = normal")
+	App.db.Exec("PRAGMA temp_store = memory")
+	App.db.Exec("PRAGMA mmap_size = 30000000000")
+	App.db.Exec("PRAGMA case_sensitive_like = false")
+
+	fmt.Println("Database album.db opened")
+}
+
+func CloseDatabase() {
+	App.db.Close()
+}
+
+func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string, order string, desc bool) []Media {
+	var media []Media
+	query := fmt.Sprintf("SELECT path, size, mtime FROM files")
+
+	if search != "" {
+		query += fmt.Sprintf(" WHERE path LIKE '%%%s%%'", search)
+	}
+//	if filters != "" {
+//		m, im := decodeFilterMasks(filters)
+//		if search != "" {
+//			query += " AND"
+//		} else {
+//			query += " WHERE"
+//		}
+//		query += fmt.Sprintf(" attrs & %d = %d AND attrs & %d = 0", m, m, im)
+//	}
+	if order != "" {
+		query += fmt.Sprintf(" ORDER BY %s", order)
+		if desc {
+			query += " DESC"
+		}
+	}
+	if page > 0 {
+		offset := (page - 1) * pageSize
+		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
+	}
+	query += ";"
+
+	fmt.Println("getMedia: ", query)
+	err := db.Select(&media, query)
+	if err != nil {
+		fmt.Println("getMedia error", err)
+		return nil
+	}
+	return media
+}
+
+

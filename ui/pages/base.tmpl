@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/albumium.css">
+    <script type="text/javascript" src="/static/js/albumium.js"></script>
+    <title>{{ .Title }}</title>
+</head>
+<body>
+<header>
+    <nav class="menu">		
+		<a class={{ if eq .MainMenu 0 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/">Home</a>
+        <a class={{ if eq .MainMenu 1 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/album?page=1">Album</a>
+        <a class={{ if eq .MainMenu 2 }} "selmenuitem" {{ else }} "menuitem" {{ end }} href="/about">About</a>
+    </nav>
+</header>
+<main>
+    {{block "content" .}} no content {{end}}
+</main>
+<footer>
+    <br><br><br><br><br>
+    <hr>
+    Site created using <strong>Golang</strong>
+</footer>
+</body>
+</html>

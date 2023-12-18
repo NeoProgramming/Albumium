@@ -1,4 +1,4 @@
-module Albumium
+module albumium
 
 go 1.18
 
