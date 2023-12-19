@@ -1,3 +1,12 @@
 {{define "media"}}
-
+<li>
+    {{if eq .FType -1}}
+    <b>{{.Path}}</b>
+    {{else if eq .FType 0}}
+    <img src='/media/{{.Path}}' height='200px'>
+    {{else}}
+    <video src='/media/{{.Path}}' height='200px'></video>
+    {{end}}
+    {{.Path}}
+</li>
 {{end}}

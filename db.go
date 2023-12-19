@@ -5,6 +5,8 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
+	"path/filepath"
+	"strings"
 )
 
 type Media struct {
@@ -15,6 +17,7 @@ type Media struct {
 	MTime int64  `db:"mtime"`
 	Sha1  string `db:"sha1"`
 	Sha2  string `db:"sha2"`
+	FType int
 }
 
 const SQLITE_SCHEMA_Files string = `CREATE TABLE IF NOT EXISTS "files" (
@@ -26,7 +29,6 @@ const SQLITE_SCHEMA_Files string = `CREATE TABLE IF NOT EXISTS "files" (
 	"sha1"	varchar(255) DEFAULT "",
 	"sha2"	varchar(255) DEFAULT ""
 )`
-
 
 func InitDatabase() {
 	db, err := sqlx.Connect("sqlite3", "./album.db")
@@ -53,6 +55,15 @@ func CloseDatabase() {
 	App.db.Close()
 }
 
+func getMediaCount(db *sqlx.DB) int {
+	var count int
+	err := db.Get(&count, "SELECT count(*) FROM files")
+	if err != nil {
+		return 0
+	}
+	return count
+}
+
 func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string, order string, desc bool) []Media {
 	var media []Media
 	query := fmt.Sprintf("SELECT path, size, mtime FROM files")
@@ -60,15 +71,15 @@ func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string
 	if search != "" {
 		query += fmt.Sprintf(" WHERE path LIKE '%%%s%%'", search)
 	}
-//	if filters != "" {
-//		m, im := decodeFilterMasks(filters)
-//		if search != "" {
-//			query += " AND"
-//		} else {
-//			query += " WHERE"
-//		}
-//		query += fmt.Sprintf(" attrs & %d = %d AND attrs & %d = 0", m, m, im)
-//	}
+	//	if filters != "" {
+	//		m, im := decodeFilterMasks(filters)
+	//		if search != "" {
+	//			query += " AND"
+	//		} else {
+	//			query += " WHERE"
+	//		}
+	//		query += fmt.Sprintf(" attrs & %d = %d AND attrs & %d = 0", m, m, im)
+	//	}
 	if order != "" {
 		query += fmt.Sprintf(" ORDER BY %s", order)
 		if desc {
@@ -87,7 +98,13 @@ func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string
 		fmt.Println("getMedia error", err)
 		return nil
 	}
+	for i := range media {
+
+		media[i].Path = filepath.ToSlash(media[i].Path)
+		media[i].Path = strings.Replace(media[i].Path, "h:/k2/", "", 1)
+		media[i].FType = FileType(media[i].Path)
+
+		fmt.Println(media[i].Path, "  == ", media[i].FType)
+	}
 	return media
 }
-
-

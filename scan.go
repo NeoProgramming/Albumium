@@ -9,8 +9,21 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
+
+func FileType(path string) int {
+	ext := strings.ToLower(filepath.Ext(path))
+	fmt.Println(ext)
+	switch ext {
+	case ".jpg", ".jpeg", ".png", ".gif", ".bmp":
+		return 0
+	case ".mp4", ".avi", ".ts", ".flv", ".wmv", ".mov", ".mpg", ".mpeg", ".mkv", ".webm":
+		return 1
+	}
+	return -1
+}
 
 func Insert(path string, size int64, mtime time.Time) {
 
@@ -37,7 +50,6 @@ func Insert(path string, size int64, mtime time.Time) {
 		fmt.Println("insert error: path=", path, " err=", err)
 		panic(err)
 	}
-
 }
 
 func Scan() {
