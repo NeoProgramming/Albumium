@@ -5,7 +5,7 @@
     {{else if eq .FType 0}}
     <img src='/media/{{.Path}}' height='200px'>
     {{else}}
-    <video src='/media/{{.Path}}' height='200px'></video>
+    <video src='/media/{{.Path}}' height='200px' controls></video>
     {{end}}
     {{.Path}}
 </li>

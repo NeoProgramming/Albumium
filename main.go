@@ -16,6 +16,7 @@ type Application struct {
 	db       *sqlx.DB
 	srv      *http.Server
 	errorLog *log.Logger
+	config   Configuration
 }
 
 var App Application
@@ -24,6 +25,7 @@ var App Application
 func main() {
 	fmt.Println("Hello")
 	App.errorLog = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	LoadConfig()
 	InitDatabase()
 	InitWeb()
 	go HandleWeb()

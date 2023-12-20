@@ -16,7 +16,7 @@ func (app *Application) routes() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	fileServer := http.FileServer(http.Dir("./ui/static"))
-	mediaServer := http.FileServer(http.Dir("h:/k2"))
+	mediaServer := http.FileServer(http.Dir(App.config.BasePath))
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	mux.Handle("/media/", http.StripPrefix("/media/", mediaServer))
 	mux.HandleFunc("/favicon.ico", faviconHandler)

@@ -20,7 +20,15 @@ file9=album.go
 file10=ui/pages/album.tmpl
 file11=ui/fragments/pagination.tmpl
 file12=ui/fragments/media.tmpl
-current_page=0
+file13=config.go
+file14=config.toml
+file15=ui/static/css/albumium.css
+file16=ui/static/js/albumium.js
+current_page=3
+FILE_NAME_0=783;Go;0;EUTF-8;1;1;0;%2Fhome%2Fq%2FAlbumium%2Falbum.go;0;4
+FILE_NAME_1=0;None;0;EUTF-8;1;1;0;%2Fhome%2Fq%2FAlbumium%2Fui%2Fpages%2Falbum.tmpl;0;4
+FILE_NAME_2=2442;Go;0;EUTF-8;1;1;0;%2Fhome%2Fq%2FAlbumium%2Fdb.go;0;4
+FILE_NAME_3=232;Go;0;EUTF-8;1;1;0;%2Fhome%2Fq%2FAlbumium%2Fscan.go;0;4
 
 [editor]
 line_wrapping=false

@@ -101,10 +101,10 @@ func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string
 	for i := range media {
 
 		media[i].Path = filepath.ToSlash(media[i].Path)
-		media[i].Path = strings.Replace(media[i].Path, "h:/k2/", "", 1)
+		media[i].Path = strings.Replace(media[i].Path, App.config.BasePath, "", 1)
 		media[i].FType = FileType(media[i].Path)
 
-		fmt.Println(media[i].Path, "  == ", media[i].FType)
+	//	fmt.Println(media[i].Path, "  == ", media[i].FType)
 	}
 	return media
 }

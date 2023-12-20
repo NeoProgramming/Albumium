@@ -15,7 +15,7 @@ import (
 
 func FileType(path string) int {
 	ext := strings.ToLower(filepath.Ext(path))
-	fmt.Println(ext)
+//	fmt.Println(ext)
 	switch ext {
 	case ".jpg", ".jpeg", ".png", ".gif", ".bmp":
 		return 0
@@ -54,7 +54,7 @@ func Insert(path string, size int64, mtime time.Time) {
 
 func Scan() {
 	// recursive scan
-	root := "/home/q/k2" // "h:/k2/!UNS-IMG/!111" //
+	root := "/home/q/k2" // 
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		//fmt.Println(path)
 		// add path to database
