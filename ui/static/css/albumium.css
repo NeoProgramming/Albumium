@@ -87,18 +87,35 @@ body {
 }
 
 .mediaList {
-    float: none;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-.mediaList li {
-    display: inline-block;
-    width: 200px;
-    height: 200px;
-    margin: 1px;
-    margin-left:0;
-    margin-right:0;
-    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
+.mediaTile {
+    box-sizing: border-box;
+    height: 200px;
+    width: auto;
+    padding: 20px;
+    margin: 15px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background-color: yellow;
+    overflow: hidden;
+
+    flex-direction: column;
+}
+
+.mediaTile .mediaData {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.mediaTile .info {
+    margin-top: auto;
+}

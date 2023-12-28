@@ -5,10 +5,12 @@
 <button type="button" onclick="sendUpdateQueryCB('/update-checked-user-wall')">Update UserWall</button>
 <p/>
 {{template "pagination" .}}
-<ul class="mediaList">
+<div>
+<div class="mediaList">
     {{range .Files}}
     {{template "media" .}}
     {{end}}
-</ul>
+</div>
+</div>
 {{template "pagination" .}}
 {{end}}

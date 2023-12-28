@@ -1,12 +1,12 @@
 {{define "media"}}
-<li>
+<div class="mediaTile">
     {{if eq .FType -1}}
     <b>{{.Path}}</b>
     {{else if eq .FType 0}}
-    <img src='/media/{{.Path}}' height='200px'>
+    <img class="mediaData" src='/media/{{.Path}}' >
     {{else}}
-    <video src='/media/{{.Path}}' height='200px' controls></video>
+    <video class="mediaData" src='/media/{{.Path}}' controls></video>
     {{end}}
-    {{.Path}}
-</li>
+    <div class="info">{{.Path}}</div>
+</div>
 {{end}}
