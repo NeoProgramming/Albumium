@@ -23,7 +23,8 @@ func (app *Application) routes() *http.ServeMux {
 
 	mux.HandleFunc("/", app.home)
 	mux.HandleFunc("/album", app.album)
-	//	mux.HandleFunc("/groups", app.groups)
+	mux.HandleFunc("/open-media/", app.openMedia)
+	mux.HandleFunc("/handle-checked-media", app.handleMedia)
 
 	return mux
 }

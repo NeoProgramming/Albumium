@@ -25,6 +25,15 @@ func FileType(path string) int {
 	return -1
 }
 
+func FileApp(ft int) string {
+	if ft==0 {
+		return App.config.Viewer
+	} else if ft==1 {
+		return App.config.Player
+	}
+	return ""
+}
+
 func Insert(path string, size int64, mtime time.Time) {
 
 	f, err := os.Open(path)
@@ -67,3 +76,10 @@ func Scan() {
 		fmt.Printf("error walking the path %v: %v\n", root, err)
 	}
 }
+
+func UpdateFT() {
+	
+	
+}
+
+

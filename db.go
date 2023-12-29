@@ -17,7 +17,9 @@ type Media struct {
 	MTime int64  `db:"mtime"`
 	Sha1  string `db:"sha1"`
 	Sha2  string `db:"sha2"`
-	FType int
+	Attrs int	 `db:"attrs"`
+	FType int	 `db:"ftype"`
+	Name  string
 }
 
 const SQLITE_SCHEMA_Files string = `CREATE TABLE IF NOT EXISTS "files" (
@@ -27,7 +29,9 @@ const SQLITE_SCHEMA_Files string = `CREATE TABLE IF NOT EXISTS "files" (
 	"ctime"	bigint DEFAULT 0,
 	"mtime"	bigint DEFAULT 0,
 	"sha1"	varchar(255) DEFAULT "",
-	"sha2"	varchar(255) DEFAULT ""
+	"sha2"	varchar(255) DEFAULT "",
+	"attrs" integer DEFAULT 0,
+	"ftype" integer DEFAULT 0
 )`
 
 func InitDatabase() {
@@ -64,9 +68,20 @@ func getMediaCount(db *sqlx.DB) int {
 	return count
 }
 
-func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string, order string, desc bool) []Media {
+func getMediaById(db *sqlx.DB, id int) *Media {
+	var media Media
+	fmt.Println("getMediaById ", id)
+	err := db.Get(&media, "SELECT * FROM files WHERE id=?", id)
+	if err != nil {
+		fmt.Println("getMediaById error", err)
+		return nil
+	}
+	return &media
+}
+
+func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string) []Media {
 	var media []Media
-	query := fmt.Sprintf("SELECT path, size, mtime FROM files")
+	query := fmt.Sprintf("SELECT id, path, size, mtime FROM files")
 
 	if search != "" {
 		query += fmt.Sprintf(" WHERE path LIKE '%%%s%%'", search)
@@ -80,12 +95,7 @@ func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string
 	//		}
 	//		query += fmt.Sprintf(" attrs & %d = %d AND attrs & %d = 0", m, m, im)
 	//	}
-	if order != "" {
-		query += fmt.Sprintf(" ORDER BY %s", order)
-		if desc {
-			query += " DESC"
-		}
-	}
+
 	if page > 0 {
 		offset := (page - 1) * pageSize
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
@@ -99,11 +109,10 @@ func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string
 		return nil
 	}
 	for i := range media {
-
 		media[i].Path = filepath.ToSlash(media[i].Path)
 		media[i].Path = strings.Replace(media[i].Path, App.config.BasePath, "", 1)
-		media[i].FType = FileType(media[i].Path)
-
+	//	media[i].FType = FileType(media[i].Path)
+		media[i].Name = filepath.Base(media[i].Path)  
 	//	fmt.Println(media[i].Path, "  == ", media[i].FType)
 	}
 	return media

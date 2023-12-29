@@ -3,7 +3,6 @@ package main
 import (
 	"math"
 	"net/http"
-	"strconv"
 	"text/template"
 )
 
@@ -21,13 +20,9 @@ type ViewAlbum struct {
 	Title        string
 	MainMenu     int
 	Files        []Media
-}
-
-func Atodi(s string, d int) int {
-	if i, err := strconv.Atoi(s); err == nil {
-		return i
-	}
-	return d
+	Filters		 string
+	Search       string
+	FType        int
 }
 
 func (app *Application) album(w http.ResponseWriter, r *http.Request) {
@@ -39,9 +34,13 @@ func (app *Application) album(w http.ResponseWriter, r *http.Request) {
 	data.NextPage = data.Page + 1
 	data.PrevPage = data.Page - 1
 	data.TotalPages = int(math.Ceil(float64(data.Count) / float64(25)))
+	
+	data.Search = r.URL.Query().Get("search")
+	data.Filters = ""
+	data.FType = 0
 
 	// select files
-	data.Files = getMedia(App.db, data.Page, 25, "", "", "", false)
+	data.Files = getMedia(App.db, data.Page, 25, data.Search, "")
 
 	// We initialize a slice containing paths to two files.
 	files := []string{
@@ -49,6 +48,8 @@ func (app *Application) album(w http.ResponseWriter, r *http.Request) {
 		"./ui/pages/album.tmpl",
 		"./ui/fragments/pagination.tmpl",
 		"./ui/fragments/media.tmpl",
+		"./ui/fragments/search.tmpl",
+		"./ui/fragments/ftype.tmpl",
 	}
 
 	ts, err := template.ParseFiles(files...)

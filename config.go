@@ -8,6 +8,8 @@ import (
 
 type Configuration struct {
 	BasePath		string
+	Viewer			string
+	Player			string
 	ItemsPerPage	int
 	MediaWidth		int
 	MediaHeight		int	

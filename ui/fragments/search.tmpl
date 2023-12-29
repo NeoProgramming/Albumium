@@ -1,0 +1,8 @@
+{{define "search"}}
+<div class="navbar">
+    <span>Path filter:</span>
+    <button type="button" onclick="clearSearch(pkArgs('filters','{{.Filters}}'))">Clear</button>
+    <button type="button" onclick="setSearch(pkArgs('filters','{{.Filters}}'))">Filter</button>
+    <input type="text" id="search" placeholder="Enter path" value="{{.Search}}" style="width:70%"></input>
+</div>
+{{end}}

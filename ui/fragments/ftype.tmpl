@@ -1,0 +1,10 @@
+{{define "ftype"}}
+<div class="navbar">
+    <span>File types:</span>
+    <select name="ftype" onchange="changeFileTypes()">
+		<option value="0" {{if eq .FType 0}}selected{{end}}>Photo and Video</option>
+		<option value="1" {{if eq .FType 1}}selected{{end}}>Photo</option>
+		<option value="2" {{if eq .FType 2}}selected{{end}}>Video</option>
+	</select>
+</div>
+{{end}}

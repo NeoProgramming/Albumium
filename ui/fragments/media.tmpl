@@ -1,5 +1,5 @@
 {{define "media"}}
-<div class="mediaTile">
+<div class="mediaTile" id="tile{{.Id}}">
     {{if eq .FType -1}}
     <b>{{.Path}}</b>
     {{else if eq .FType 0}}
@@ -7,6 +7,10 @@
     {{else}}
     <video class="mediaData" src='/media/{{.Path}}' controls></video>
     {{end}}
-    <div class="info">{{.Path}}</div>
+    <div class="mediaInfo">
+    <input type="checkbox" id="{{.Id}}" onclick="onCheckMedia({{.Id}})" name="{{.Id}}"/>
+    {{.Name}}
+    <button onclick="openMedia({{.Id}})">📁</button>
+    </div>
 </div>
 {{end}}
