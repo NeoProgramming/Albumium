@@ -1,5 +1,11 @@
 {{define "search"}}
 <div class="navbar">
+    <span>File types:</span>
+    <select id="ftype" name="ftype" onchange="changeFileTypes(pkArgs('search','{{.Search}}'))">
+        <option value="0" {{if eq .FType 0}}selected{{end}}>All</option>
+        <option value="1" {{if eq .FType 1}}selected{{end}}>Photo</option>
+        <option value="2" {{if eq .FType 2}}selected{{end}}>Video</option>
+    </select>
     <span>Path filter:</span>
     <button type="button" onclick="clearSearch(pkArgs('filters','{{.Filters}}'))">Clear</button>
     <button type="button" onclick="setSearch(pkArgs('filters','{{.Filters}}'))">Filter</button>

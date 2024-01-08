@@ -97,16 +97,13 @@ body {
     height: 200px;
     width: auto;
     padding: 20px;
-    margin: 15px;
-
+    margin: 5px;
+    border-style: outset;
     display: flex;
-
     align-items: center;
     justify-content: center;
-
-    background-color: yellow;
+    background-color: white;
     overflow: hidden;
-
     flex-direction: column;
 }
 

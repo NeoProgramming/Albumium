@@ -7,6 +7,13 @@ import (
 	"time"
 )
 
+func WhereAnd(prev string) string {
+	if prev != "" {
+		return " AND"
+	}
+	return " WHERE"
+}
+
 func Atoi(s string) int {
 	if i, err := strconv.Atoi(s); err == nil {
 		return i

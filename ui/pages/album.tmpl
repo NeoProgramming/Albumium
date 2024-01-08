@@ -1,11 +1,10 @@
 {{define "content"}}
-<h1>ALBUM: {{ .Count }}</h1>
+<p/>
 <button type="button" onclick="sendUpdateQueryCB('/handle-checked-media')">handle 1</button>
 <button type="button" onclick="sendUpdateQueryCB('/handle-checked-media')">handle 2</button>
 <button type="button" onclick="sendUpdateQueryCB('/handle-checked-media')">handle 3</button>
 <p/>
 {{template "search" .}}
-{{template "ftype" .}}
 {{template "pagination" .}}
 <div>
 <div class="mediaList">

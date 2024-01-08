@@ -6,13 +6,14 @@ import (
 )
 
 type ViewHome struct {
-	Title string
+	Title    string
 	MainMenu int
 }
 
 func (app *Application) home(w http.ResponseWriter, r *http.Request) {
-	data := ViewHome{
-	}
+	data := ViewHome{}
+
+	data.MainMenu = 0
 
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
@@ -24,13 +25,13 @@ func (app *Application) home(w http.ResponseWriter, r *http.Request) {
 		"./ui/pages/base.tmpl",
 		"./ui/pages/home.tmpl",
 	}
-	
+
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
-	
+
 	err = ts.Execute(w, data)
 	if err != nil {
 		app.serverError(w, err)

@@ -27,7 +27,6 @@ file16=ui/static/js/albumium.js
 file17=media.go
 file18=tools.go
 file19=ui/fragments/search.tmpl
-file20=ui/fragments/ftype.tmpl
 current_page=4
 FILE_NAME_0=783;Go;0;EUTF-8;1;1;0;%2Fhome%2Fq%2FAlbumium%2Falbum.go;0;4
 FILE_NAME_1=0;None;0;EUTF-8;1;1;0;%2Fhome%2Fq%2FAlbumium%2Fui%2Fpages%2Falbum.tmpl;0;4

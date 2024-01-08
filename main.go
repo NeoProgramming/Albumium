@@ -7,9 +7,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 type Application struct {
@@ -21,12 +21,12 @@ type Application struct {
 
 var App Application
 
-
 func main() {
 	fmt.Println("Hello")
 	App.errorLog = log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	LoadConfig()
 	InitDatabase()
+
 	InitWeb()
 	go HandleWeb()
 
@@ -44,8 +44,8 @@ func main() {
 	for {
 		time.Sleep(time.Second)
 	}
-	
+
 	//Scan()
-	
+
 	fmt.Println("good bye")
 }

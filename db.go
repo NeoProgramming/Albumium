@@ -17,8 +17,8 @@ type Media struct {
 	MTime int64  `db:"mtime"`
 	Sha1  string `db:"sha1"`
 	Sha2  string `db:"sha2"`
-	Attrs int	 `db:"attrs"`
-	FType int	 `db:"ftype"`
+	Attrs int    `db:"attrs"`
+	FType int    `db:"ftype"`
 	Name  string
 }
 
@@ -59,15 +59,6 @@ func CloseDatabase() {
 	App.db.Close()
 }
 
-func getMediaCount(db *sqlx.DB) int {
-	var count int
-	err := db.Get(&count, "SELECT count(*) FROM files")
-	if err != nil {
-		return 0
-	}
-	return count
-}
-
 func getMediaById(db *sqlx.DB, id int) *Media {
 	var media Media
 	fmt.Println("getMediaById ", id)
@@ -79,14 +70,16 @@ func getMediaById(db *sqlx.DB, id int) *Media {
 	return &media
 }
 
-func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string) []Media {
-	var media []Media
-	query := fmt.Sprintf("SELECT id, path, size, mtime FROM files")
-
+func getMediaWhere(search string, ftc int, filters string) string {
+	var query string
 	if search != "" {
 		query += fmt.Sprintf(" WHERE path LIKE '%%%s%%'", search)
 	}
-	//	if filters != "" {
+	if ftc != 0 {
+		query += WhereAnd(search)
+		query += fmt.Sprintf(" ftype = %d", ftc)
+	}
+	//if filters != "" {
 	//		m, im := decodeFilterMasks(filters)
 	//		if search != "" {
 	//			query += " AND"
@@ -94,13 +87,29 @@ func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string
 	//			query += " WHERE"
 	//		}
 	//		query += fmt.Sprintf(" attrs & %d = %d AND attrs & %d = 0", m, m, im)
-	//	}
+	//}
+	return query
+}
 
+func getMediaCount(db *sqlx.DB, search string, ftc int, filters string) int {
+	var count int = 0
+	query := "SELECT COUNT(*) FROM files"
+	query += getMediaWhere(search, ftc, filters)
+	err := db.Get(&count, query)
+	if err != nil {
+		return 0
+	}
+	return count
+}
+
+func getMedia(db *sqlx.DB, page int, pageSize int, search string, ftc int, filters string) []Media {
+	var media []Media
+	query := "SELECT id, path, size, mtime, attrs, ftype FROM files"
+	query += getMediaWhere(search, ftc, filters)
 	if page > 0 {
 		offset := (page - 1) * pageSize
 		query += fmt.Sprintf(" LIMIT %d OFFSET %d", pageSize, offset)
 	}
-	query += ";"
 
 	fmt.Println("getMedia: ", query)
 	err := db.Select(&media, query)
@@ -111,9 +120,9 @@ func getMedia(db *sqlx.DB, page int, pageSize int, search string, filters string
 	for i := range media {
 		media[i].Path = filepath.ToSlash(media[i].Path)
 		media[i].Path = strings.Replace(media[i].Path, App.config.BasePath, "", 1)
-	//	media[i].FType = FileType(media[i].Path)
-		media[i].Name = filepath.Base(media[i].Path)  
-	//	fmt.Println(media[i].Path, "  == ", media[i].FType)
+		//	media[i].FType = FileType(media[i].Path)
+		media[i].Name = filepath.Base(media[i].Path)
+		//	fmt.Println(media[i].Path, "  == ", media[i].FType)
 	}
 	return media
 }

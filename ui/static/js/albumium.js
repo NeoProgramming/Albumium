@@ -1,16 +1,19 @@
 function openMedia(id) {
-   var xhr = new XMLHttpRequest();
-   xhr.open("POST", "/open-media/" + id, true);
-   console.log("open-media " , id);
-   xhr.send();
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/open-media/" + id, true);
+    console.log("open-media " , id);
+    xhr.send();
 }
 
-function onCheckMedia(id) {
+function onCheckMedia(event, id) {
 	console.log("onCheckMedia " , id);
-	var checkbox = document.getElementById(id);
-    var parentDiv = checkbox.parentNode.parentNode;
+	let checkbox = document.getElementById(id);
+    let parentDiv = checkbox.parentNode.parentNode;
     if(checkbox.checked) {
-       parentDiv.style.backgroundColor = 'red';
+        if (event.shiftKey)
+            parentDiv.style.backgroundColor = '#5555FF';
+        else
+            parentDiv.style.backgroundColor = '#FFA500';
     } else {
        parentDiv.style.backgroundColor = 'white';
     }
@@ -21,7 +24,7 @@ function setSearch(extraArgs) {
     // Get the name from the form
     let text = document.getElementById('search').value;
     let currentUrl = window.location.href.split('?')[0];
-    window.location.href = currentUrl + '?' +pkArgs('search', encodeURIComponent(text), extraArgs);
+    window.location.href = currentUrl + '?' + pkArgs('search', encodeURIComponent(text), extraArgs);
 }
 
 function clearSearch(extraArgs) {
@@ -32,15 +35,21 @@ function clearSearch(extraArgs) {
 function applyFilters(extraArgs) {
 	console.log("applyFilters ", extraArgs);
     let currentUrl = window.location.href.split('?')[0];
-    let code = getChk('f_photo') +  getChk('f_video');
+    let code = getChk('f_photo') +  getChk('f_video'); //todo: ???
     if(filtersIsEmpty(code))
 		window.location.href = currentUrl + '?' +extraArgs;
 	else
 		window.location.href = currentUrl + '?' +pkArgs('filters', code, extraArgs);
 }
 
-function changeFileTypes() {
-	
+function changeFileTypes(extraArgs) {
+    console.log("changeFileTypes ", extraArgs);
+    let ft = document.getElementById('ftype').value;
+    let currentUrl = window.location.href.split('?')[0];
+    if(ft == 0)
+        window.location.href = currentUrl + '?' + extraArgs;
+    else
+        window.location.href = currentUrl + '?' + pkArgs('ftype', ft, extraArgs);
 }
 
 // HELPERS FOR UPDATE DB QUERIES
@@ -151,10 +160,12 @@ function pkArgs() {
     }
     // trailing argument
     if(i < arguments.length) {
-        if(i>0)
+        if(i>0 && arguments[i]!="")
             res += '&';
         res += arguments[i];
     }
+    //if(res != "")
+    //    res = '?' + res;
 	return res;
 }
 
